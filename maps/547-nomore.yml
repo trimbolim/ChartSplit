@@ -16,4 +16,7 @@ destinations:
     trumpet2: [12,12]
     trumpet3: [13,13]
     trumpet4: [14,14]
+    piano: [25,26]
+    bass: [23,24]
+    conductor: [27,34]
 ...

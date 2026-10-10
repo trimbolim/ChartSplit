@@ -9,7 +9,8 @@ parser = argparse.ArgumentParser(description='Split Master PDFs into parts')
 parser.add_argument('file_to_split',  type=str, 
                     help='Master PDF to be split.')
 parser.add_argument('--map', help='path to yaml file with parts map', type=str, required=True)
-parser.add_argument('--outfile', help='filename for output files', type=str, required=True)
+parser.add_argument('--chartnum', help='chartnum for output filename', type=str, required=True)
+parser.add_argument('--title_slug', help='title for output filename', type=str, required=True)
 parser.add_argument('--push', help='push files into Swing Shift folders', action='store_true' )
 
 SWING_SHIFT_PARTS_DIR = "/Users/matthewtrimboli/Google Drive/My Drive/Swing Shift/Charts/Parts"
@@ -19,7 +20,8 @@ args = parser.parse_args()
 # /Users/matthewtrimboli/drums.pdf
 pycpdflib.loadDLL("/usr/local/lib/libpycpdf.so")
 bigpdf = pycpdflib.fromFile(args.file_to_split, '')
-outfilename = args.outfile
+chartnum = args.chartnum
+title_slug = args.title_slug
 
 
 with open(args.map) as file:
@@ -37,6 +39,8 @@ for chair in chartmap['destinations']['chairs']:
     last = chartmap['destinations']['chairs'][chair][1]
     r = pycpdflib.pageRange(first,last)
     weepdf = pycpdflib.selectPages(bigpdf, r)
+
+    outfilename = f"{chartnum}-{chair}-{title_slug}.pdf" 
 
     if args.push:
         print ("Pushing " + outfilename + " to " + SWING_SHIFT_PARTS_DIR + "/" + chair)
